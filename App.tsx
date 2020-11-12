@@ -2,7 +2,7 @@ import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ErrorReportingProvider } from "./src/context";
+import { ErrorReportingProvider, AppSettingsProvider } from "./src/context";
 import { AppNavigator } from "./src/navigation";
 
 export default function App() {
@@ -12,7 +12,7 @@ export default function App() {
     const loadResourcesAndDataAsync = async () => {
       try {
         await Font.loadAsync({
-          "PTSerif": require("./src/assets/fonts/PTSerif-Regular.ttf"),
+          PTSerif: require("./src/assets/fonts/PTSerif-Regular.ttf"),
         });
       } catch (err) {
         console.log(err);
@@ -25,10 +25,12 @@ export default function App() {
 
   return isLoadingComplete ? (
     <ErrorReportingProvider>
-      <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <AppNavigator />
-      </SafeAreaProvider>
+      <AppSettingsProvider>
+        <SafeAreaProvider>
+          <StatusBar style="dark" />
+          <AppNavigator />
+        </SafeAreaProvider>
+      </AppSettingsProvider>
     </ErrorReportingProvider>
   ) : null;
 }

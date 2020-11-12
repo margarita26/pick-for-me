@@ -1,30 +1,37 @@
 import styled from "@emotion/native";
 import React from "react";
-import { colors, fontfamilies, fontSizes } from "../constants";
+import { fontfamilies } from "../constants";
 
 type RoundedButtonProps = {
-  label: string;
-  onPress: () => void;
+    label: string;
+    fontSize: string;
+    fontColor: string;
+    onPress: () => void;
+};
+
+type StyledTextProps = {
+    fontSize: string;
+    fontColor: string;
 };
 
 const StyledButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 `;
 
-const StyledText = styled.Text`
-  font-family: ${fontfamilies.ptSerif};
-  font-size: ${fontSizes.regular};
-  color: ${colors.white};
+const StyledText = styled.Text<StyledTextProps>`
+    font-family: ${fontfamilies.ptSerif};
+    font-size: ${(props: StyledTextProps) => props.fontSize};
+    color: ${(props: StyledTextProps) => props.fontColor};
 `;
 
-export const RoundedButton: React.FC<RoundedButtonProps> = ({
-  label,
-  onPress,
-}) => {
-  return (
-    <StyledButton onPress={onPress}>
-      <StyledText>{label}</StyledText>
-    </StyledButton>
-  );
+export const RoundedButton: React.FC<RoundedButtonProps> = ({ label, fontSize, fontColor, onPress }) => {
+    return (
+        <StyledButton onPress={onPress}>
+            <StyledText fontSize={fontSize} fontColor={fontColor}>
+                {label}
+            </StyledText>
+        </StyledButton>
+    );
 };

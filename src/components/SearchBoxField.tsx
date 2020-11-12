@@ -2,53 +2,51 @@ import styled from "@emotion/native";
 import React, { useState } from "react";
 import { TextInput, useWindowDimensions } from "react-native";
 import { colors, fontfamilies, fontSizes } from "../constants";
+import { FontAwesome } from "@expo/vector-icons";
+import { fontAwesomeIcons } from "../constants/icons";
 
 type SearchBoxFieldProps = {
-  placeholder: string;
-};
-
-type TextInputProps = {
-  width: string;
+    placeholder: string;
 };
 
 const StyledContainer = styled.View`
-  border-color: ${colors.white};
-  background-color: ${colors.white};
-  opacity: 0.5;
-  border-width: 1px;
-  border-radius: 2px;
-  margin: 16px;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    border-color: ${colors.white};
+    background-color: ${colors.white};
+    border-width: 1px;
+    border-radius: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 `;
 
 const StyledTextInput = styled(TextInput)`
-  height: 40px;
-  width: ${(props: TextInputProps) => props.width};
-  font-family: ${fontfamilies.ptSerif};
-  font-size: ${fontSizes.regular};
-  color: ${colors.black};
-  opacity: 1;
-  margin: 8px;
+    height: 48px;
+    font-family: ${fontfamilies.ptSerif};
+    font-size: ${fontSizes.regular};
+    color: ${colors.black};
+    opacity: 1;
+    padding-left: 16px;
+    padding-right: 16px;
 `;
 
-export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({
-  placeholder,
-}) => {
-  const [value, onChangeText] = useState<string>("");
+export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({ placeholder }) => {
+    const [value, onChangeText] = useState<string>("");
 
-  const windowWidth = useWindowDimensions().width;
-  const fieldWidth = windowWidth * 0.9;
-  const stringFieldWidth = fieldWidth.toString() + "px";
-
-  return (
-    <StyledContainer>
-      <StyledTextInput
-        width={stringFieldWidth}
-        onChangeText={(text) => onChangeText(text)}
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={colors.darkGrey}
-        keyboardAppearance={'dark'}
-      />
-    </StyledContainer>
-  );
+    return (
+        <StyledContainer>
+            <FontAwesome name={fontAwesomeIcons.search} size={16} color={colors.grey} />
+            <StyledTextInput
+                onChangeText={(text) => onChangeText(text)}
+                value={value}
+                placeholder={placeholder}
+                placeholderTextColor={colors.darkGrey}
+                keyboardAppearance={"dark"}
+                autoFocus={true}
+            />
+        </StyledContainer>
+    );
 };

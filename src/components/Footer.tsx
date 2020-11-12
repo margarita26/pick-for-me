@@ -1,58 +1,56 @@
 import styled from "@emotion/native";
 import React from "react";
-import { useWindowDimensions } from "react-native";
+import { colors } from "../constants";
+import { fontSizes } from "../constants/font-size";
 import { RoundedButton } from "./RoundedButton";
 
 type FooterProps = {
-  backgroundColor: string;
-  leftButtonLabel: string | null;
-  leftButtonPress: () => void;
-  rightButtonLabel: string | null;
-  rightButtonPress: () => void;
+    leftButtonLabel: string | null;
+    leftButtonPress: () => void;
+    rightButtonLabel: string | null;
+    rightButtonPress: () => void;
 };
 
 type StyledContainerProps = {
-  backgroundColor: string;
-  height: number;
-  paddingHorizontal: number;
-  leftButton: string | null;
+    leftButton: string | null;
 };
 
 const StyledContainer = styled.View<StyledContainerProps>`
-  flex-direction: row;
-  justify-content: ${(props: StyledContainerProps) =>
-    props.leftButton ? "space-between" : "flex-end"};
-  align-items: center;
-  height: ${(props: StyledContainerProps) => props.height};
-  background-color: ${(props: StyledContainerProps) => props.backgroundColor};
-  opacity: 0.6;
-  padding-top: ${(props: StyledContainerProps) => props.paddingHorizontal};
+    background-color: ${colors.main};
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 10%;
+    opacity: 0.6;
 `;
 
-export const Footer: React.FC<FooterProps> = ({
-  backgroundColor,
-  leftButtonLabel,
-  leftButtonPress,
-  rightButtonLabel,
-  rightButtonPress,
-}) => {
-  const windowWidth = useWindowDimensions().width;
-  const HEIGHT = windowWidth * 0.21;
-  const FOOTER_PADDING = windowWidth * 0.1;
+const StyledButtonContainer = styled.View`
+    flex: 1;
+`;
 
-  return (
-    <StyledContainer
-      height={HEIGHT}
-      backgroundColor={backgroundColor}
-      paddingHorizontal={FOOTER_PADDING}
-      leftButton={leftButtonLabel}
-    >
-      {leftButtonLabel && (
-        <RoundedButton label={leftButtonLabel} onPress={leftButtonPress} />
-      )}
-      {rightButtonLabel && (
-        <RoundedButton label={rightButtonLabel} onPress={rightButtonPress} />
-      )}
-    </StyledContainer>
-  );
+export const Footer: React.FC<FooterProps> = ({ leftButtonLabel, leftButtonPress, rightButtonLabel, rightButtonPress }) => {
+    return (
+        <StyledContainer leftButton={leftButtonLabel}>
+            {leftButtonLabel && (
+                <StyledButtonContainer>
+                    <RoundedButton
+                        label={leftButtonLabel}
+                        fontSize={fontSizes.regular}
+                        fontColor={colors.white}
+                        onPress={leftButtonPress}
+                    />
+                </StyledButtonContainer>
+            )}
+            {rightButtonLabel && (
+                <StyledButtonContainer>
+                    <RoundedButton
+                        label={rightButtonLabel}
+                        fontSize={fontSizes.regular}
+                        fontColor={colors.white}
+                        onPress={rightButtonPress}
+                    />
+                </StyledButtonContainer>
+            )}
+        </StyledContainer>
+    );
 };

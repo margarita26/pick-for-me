@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19003,
-  "expoServerPort": 19004,
-  "packagerPort": 19005,
-  "packagerPid": 39337,
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 48817,
   "expoServerNgrokUrl": "https://pq-4ig.margarita26.pick-for-me.exp.direct",
   "packagerNgrokUrl": "https://packager.pq-4ig.margarita26.pick-for-me.exp.direct",
-  "ngrokPid": 39438
+  "ngrokPid": 48847
 }
