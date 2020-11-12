@@ -1,10 +1,9 @@
+import * as Font from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ErrorReportingProvider } from "./src/context";
-import * as Font from "expo-font";
-import { SplashScreen } from "expo";
-import { Onboarding } from "./src/screens";
-import { StatusBar } from "expo-status-bar";
+import { AppNavigator } from "./src/navigation";
 
 export default function App() {
   const [isLoadingComplete, setLoadingComplete] = useState<boolean>(false);
@@ -13,9 +12,7 @@ export default function App() {
     const loadResourcesAndDataAsync = async () => {
       try {
         await Font.loadAsync({
-          "Montserrat-SemiBold": require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
-          "Montserrat-Medium": require("./src/assets/fonts/Montserrat-Medium.ttf"),
-          "Montserrat-Light": require("./src/assets/fonts/Montserrat-Light.ttf"),
+          "PTSerif": require("./src/assets/fonts/PTSerif-Regular.ttf"),
         });
       } catch (err) {
         console.log(err);
@@ -30,7 +27,7 @@ export default function App() {
     <ErrorReportingProvider>
       <SafeAreaProvider>
         <StatusBar style="dark" />
-        <Onboarding />
+        <AppNavigator />
       </SafeAreaProvider>
     </ErrorReportingProvider>
   ) : null;
