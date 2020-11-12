@@ -1,23 +1,27 @@
-import React from "react";
-import { View, useWindowDimensions } from "react-native";
-import { RoundedButton } from "./RoundedButton";
 import styled from "@emotion/native";
+import React from "react";
+import { useWindowDimensions } from "react-native";
+import { RoundedButton } from "./RoundedButton";
 
 type FooterProps = {
   backgroundColor: string;
-  rightButtonLabel: string;
-  rightButtonPress: () => boolean;
+  leftButtonLabel: string | null;
+  leftButtonPress: () => void;
+  rightButtonLabel: string | null;
+  rightButtonPress: () => void;
 };
 
 type StyledContainerProps = {
   backgroundColor: string;
   height: number;
   paddingHorizontal: number;
+  leftButton: string | null;
 };
 
 const StyledContainer = styled.View<StyledContainerProps>`
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: ${(props: StyledContainerProps) =>
+    props.leftButton ? "space-between" : "flex-end"};
   align-items: center;
   height: ${(props: StyledContainerProps) => props.height};
   background-color: ${(props: StyledContainerProps) => props.backgroundColor};
@@ -27,6 +31,8 @@ const StyledContainer = styled.View<StyledContainerProps>`
 
 export const Footer: React.FC<FooterProps> = ({
   backgroundColor,
+  leftButtonLabel,
+  leftButtonPress,
   rightButtonLabel,
   rightButtonPress,
 }) => {
@@ -39,8 +45,14 @@ export const Footer: React.FC<FooterProps> = ({
       height={HEIGHT}
       backgroundColor={backgroundColor}
       paddingHorizontal={FOOTER_PADDING}
+      leftButton={leftButtonLabel}
     >
-      <RoundedButton label={rightButtonLabel} onPress={rightButtonPress} />
+      {leftButtonLabel && (
+        <RoundedButton label={leftButtonLabel} onPress={leftButtonPress} />
+      )}
+      {rightButtonLabel && (
+        <RoundedButton label={rightButtonLabel} onPress={rightButtonPress} />
+      )}
     </StyledContainer>
   );
 };

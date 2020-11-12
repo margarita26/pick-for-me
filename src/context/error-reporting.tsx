@@ -14,8 +14,7 @@ export const ErrorReportingProvider: React.FC = ({ children }) => {
   const recordError = (error: Error) => {
     try {
       Alert.alert("ErrorReportingProvider: recordError - " + error);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (

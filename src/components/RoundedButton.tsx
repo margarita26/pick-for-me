@@ -1,10 +1,10 @@
 import styled from "@emotion/native";
 import React from "react";
-import { colors, fontSizes } from "../constants";
+import { colors, fontfamilies, fontSizes } from "../constants";
 
 type RoundedButtonProps = {
   label: string;
-  onPress: () => boolean;
+  onPress: () => void;
 };
 
 const StyledButton = styled.TouchableOpacity`
@@ -13,6 +13,7 @@ const StyledButton = styled.TouchableOpacity`
 `;
 
 const StyledText = styled.Text`
+  font-family: ${fontfamilies.ptSerif};
   font-size: ${fontSizes.regular};
   color: ${colors.white};
 `;
