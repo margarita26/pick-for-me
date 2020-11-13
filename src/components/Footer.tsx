@@ -2,7 +2,7 @@ import styled from "@emotion/native";
 import React from "react";
 import { colors } from "../constants";
 import { fontSizes } from "../constants/font-size";
-import { RoundedButton } from "./RoundedButton";
+import { SimpleButton } from "./SimpleButton";
 
 type FooterProps = {
     leftButtonLabel: string | null;
@@ -33,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ leftButtonLabel, leftButtonPress
         <StyledContainer leftButton={leftButtonLabel}>
             {leftButtonLabel && (
                 <StyledButtonContainer>
-                    <RoundedButton
+                    <SimpleButton
                         label={leftButtonLabel}
                         fontSize={fontSizes.regular}
                         fontColor={colors.white}
@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ leftButtonLabel, leftButtonPress
             )}
             {rightButtonLabel && (
                 <StyledButtonContainer>
-                    <RoundedButton
+                    <SimpleButton
                         label={rightButtonLabel}
                         fontSize={fontSizes.regular}
                         fontColor={colors.white}

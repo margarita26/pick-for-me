@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import { createContext, useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
 import { ErrorReportingContext } from "./error-reporting";
-import { keys } from "../constants/storage-keys";
 
 export type AppSettingsContextProps = {
     setSettings: (key: string, val: any) => void;
@@ -24,7 +23,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     useEffect(() => {
         const bootstrapAsync = async () => {
             try {
-                const onboardingResult = await AsyncStorage.getItem(keys.onboardingComplete);
+                const onboardingResult = await AsyncStorage.getItem(ONBOARDING_COMPLETE);
                 if (onboardingResult) {
                     setisOnbordingCompleted(JSON.parse(onboardingResult));
                     return;
@@ -39,7 +38,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
 
     const setSettings = async (key: string, val: any) => {
         try {
-            if (key === keys.onboardingComplete) {
+            if (key === ONBOARDING_COMPLETE) {
                 setisOnbordingCompleted(true);
             }
             await AsyncStorage.setItem(key, val);

@@ -26,7 +26,7 @@ const StyledText = styled.Text<StyledTextProps>`
     color: ${(props: StyledTextProps) => props.fontColor};
 `;
 
-export const RoundedButton: React.FC<RoundedButtonProps> = ({ label, fontSize, fontColor, onPress }) => {
+export const SimpleButton: React.FC<RoundedButtonProps> = ({ label, fontSize, fontColor, onPress }) => {
     return (
         <StyledButton onPress={onPress}>
             <StyledText fontSize={fontSize} fontColor={fontColor}>
