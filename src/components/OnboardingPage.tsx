@@ -16,10 +16,6 @@ type ContainerProps = {
     backgroundColor: string;
 };
 
-type InnerContainerProps = {
-    justifyContent: string;
-};
-
 const StyledContainer = styled.View<ContainerProps>`
     flex: 1;
     background-color: ${(props: ContainerProps) => props.backgroundColor};

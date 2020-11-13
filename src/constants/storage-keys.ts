@@ -1,3 +1,1 @@
-export const keys = {
-    onboardingComplete: "@onboarding_complete",
-}
+export const ONBOARDING_COMPLETE = "@onboarding_complete";

@@ -1,4 +1,4 @@
 export * from "./OnboardingPage";
-export * from "./RoundedButton";
+export * from "./SimpleButton";
 export * from "./Footer";
 export * from "./TitleImage";

@@ -7,6 +7,8 @@ import { fontAwesomeIcons } from "../constants/icons";
 
 type SearchBoxFieldProps = {
     placeholder: string;
+    value: string;
+    onTextChange: (text: string) => void;
 };
 
 const StyledContainer = styled.View`
@@ -33,14 +35,12 @@ const StyledTextInput = styled(TextInput)`
     padding-right: 16px;
 `;
 
-export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({ placeholder }) => {
-    const [value, onChangeText] = useState<string>("");
-
+export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({ placeholder, value, onTextChange }) => {
     return (
         <StyledContainer>
             <FontAwesome name={fontAwesomeIcons.search} size={16} color={colors.grey} />
             <StyledTextInput
-                onChangeText={(text) => onChangeText(text)}
+                onChangeText={(text) => onTextChange(text)}
                 value={value}
                 placeholder={placeholder}
                 placeholderTextColor={colors.darkGrey}

@@ -3,7 +3,7 @@ import ViewPager from "@react-native-community/viewpager";
 import React, { useContext, useRef } from "react";
 import { View } from "react-native";
 import { Footer, Page } from "../components";
-import { colors, ionicsIcons, keys } from "../constants";
+import { colors, ionicsIcons, ONBOARDING_COMPLETE } from "../constants";
 import { AppSettingsContext } from "../context/app-settings";
 
 const buttons = {
@@ -70,7 +70,7 @@ export const Onboarding: React.FC = () => {
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
                         rightButtonLabel={buttons.continue}
-                        rightButtonPress={() => setSettings(keys.onboardingComplete, JSON.stringify(true))}
+                        rightButtonPress={() => setSettings(ONBOARDING_COMPLETE, JSON.stringify(true))}
                     />
                 </View>
             </StyledViewPager>

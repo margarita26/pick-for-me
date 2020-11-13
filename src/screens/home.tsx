@@ -2,10 +2,10 @@ import styled from "@emotion/native";
 import React, { useContext, useState } from "react";
 import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import StarRating from "react-native-star-rating";
-import { RoundedButton } from "../components";
+import { SimpleButton } from "../components";
 import { SearchBoxField } from "../components/SearchBoxField";
-import { colors, fontfamilies, fontSizes } from "../constants";
-import { fontAwesomeIcons } from "../constants/icons";
+import { colors, fontSizes } from "../constants";
+import { fontAwesomeIcons, iconFamilies } from "../constants/icons";
 import { AppSettingsContext } from "../context/app-settings";
 
 type StyledSafeAreaViewProps = {
@@ -28,8 +28,6 @@ const StyledContainer = styled.View`
 
 const StyledFooterContainer = styled.View`
     height: 8%;
-    align-items: center;
-    justify-content: center;
     background-color: ${colors.white};
 `;
 
@@ -41,31 +39,31 @@ const StyledInnerContainer = styled.View`
     justify-content: space-between;
 `;
 
-const StyledText = styled.Text`
-    font-size: ${fontSizes.regular};
-    font-family: ${fontfamilies.ptSerif};
-    color: ${colors.white};
+const StyledButtonContainer = styled.View`
+    flex: 1;
 `;
 
 export const Home: React.FC = () => {
     const [starCount, setStarCount] = useState<number>(2);
+    const [searchRequest, setSearchRequest] = useState<string>("");
     const { clearAll } = useContext(AppSettingsContext);
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <StyledSafeAreaContainer flex={1} color={colors.white}>
                 <StyledContainer>
                     <StyledInnerContainer>
-                        <SearchBoxField placeholder={"What are you looking for?"} />
+                        <SearchBoxField value={searchRequest} onTextChange={setSearchRequest} placeholder={"What are you looking for?"} />
                     </StyledInnerContainer>
                     <StyledInnerContainer>
                         <StarRating
                             disabled={false}
-                            iconSet={"FontAwesome"}
+                            iconSet={iconFamilies.fontAwesome}
                             fullStar={fontAwesomeIcons.dollar}
                             emptyStar={fontAwesomeIcons.dollar}
                             fullStarColor={colors.white}
                             emptyStarColor={colors.main}
-                            maxStars={5}
+                            maxStars={4}
                             rating={starCount}
                             starSize={40}
                             containerStyle={{
@@ -79,12 +77,14 @@ export const Home: React.FC = () => {
                     </StyledInnerContainer>
                 </StyledContainer>
                 <StyledFooterContainer>
-                    <RoundedButton
-                        label={"Submit"}
-                        fontSize={fontSizes.heading}
-                        fontColor={colors.main}
-                        onPress={() => Alert.alert("pressed")}
-                    />
+                    <StyledButtonContainer>
+                        <SimpleButton
+                            label={"Submit"}
+                            fontSize={fontSizes.heading}
+                            fontColor={colors.main}
+                            onPress={() => Alert.alert("pressed")}
+                        />
+                    </StyledButtonContainer>
                 </StyledFooterContainer>
                 {/* <StyledFooterContainer>
                     <RoundedButton label={"Clear"} fontSize={fontSizes.heading} fontColor={colors.main} onPress={() => clearAll()} />
