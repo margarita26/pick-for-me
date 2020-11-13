@@ -33,6 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ leftButtonLabel, leftButtonPress
         <StyledContainer leftButton={leftButtonLabel}>
             {leftButtonLabel && (
                 <StyledButtonContainer>
+                    <SimpleButton
                         label={leftButtonLabel}
                         fontSize={fontSizes.regular}
                         fontColor={colors.white}
