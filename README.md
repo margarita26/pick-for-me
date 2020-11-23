@@ -10,3 +10,9 @@
 - Use expo-location to get geolocation of the device (when enabled)
 - Implement GraphQl queries to get data from Yelp GraphQL endpoints
 - THE ULTIMATE GOAL: publish to apple store
+
+## Project set up
+
+- `npm i`
+- `expo start`
+- scan QR code to run on your device or select a simulator

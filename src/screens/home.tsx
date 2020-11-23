@@ -1,11 +1,13 @@
 import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
-import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import StarRating from "react-native-star-rating";
-import { SimpleButton } from "../components";
+import { Footer, SimpleButton } from "../components";
 import { SearchBoxField } from "../components/SearchBoxField";
 import { colors, fontSizes } from "../constants";
 import { fontAwesomeIcons, iconFamilies } from "../constants/icons";
+import { screens } from "../constants/screens";
 import { AppSettingsContext } from "../context/app-settings";
 
 type StyledSafeAreaViewProps = {
@@ -39,14 +41,11 @@ const StyledInnerContainer = styled.View`
     justify-content: space-between;
 `;
 
-const StyledButtonContainer = styled.View`
-    flex: 1;
-`;
-
 export const Home: React.FC = () => {
     const [starCount, setStarCount] = useState<number>(2);
     const [searchRequest, setSearchRequest] = useState<string>("");
     const { clearAll } = useContext(AppSettingsContext);
+    const navigation = useNavigation();
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -76,19 +75,18 @@ export const Home: React.FC = () => {
                         />
                     </StyledInnerContainer>
                 </StyledContainer>
+                <Footer
+                    backgroundColor={colors.white}
+                    fontSize={fontSizes.heading}
+                    fontColor={colors.main}
+                    leftButtonLabel={null}
+                    leftButtonPress={() => null}
+                    rightButtonLabel={"Search"}
+                    rightButtonPress={() => navigation.navigate(screens.searchResult, { request: searchRequest, starRating: starCount })}
+                />
                 <StyledFooterContainer>
-                    <StyledButtonContainer>
-                        <SimpleButton
-                            label={"Submit"}
-                            fontSize={fontSizes.heading}
-                            fontColor={colors.main}
-                            onPress={() => Alert.alert("pressed")}
-                        />
-                    </StyledButtonContainer>
+                    <SimpleButton label={"Clear"} fontSize={fontSizes.heading} fontColor={colors.main} onPress={() => clearAll()} />
                 </StyledFooterContainer>
-                {/* <StyledFooterContainer>
-                    <RoundedButton label={"Clear"} fontSize={fontSizes.heading} fontColor={colors.main} onPress={() => clearAll()} />
-                </StyledFooterContainer> */}
             </StyledSafeAreaContainer>
         </TouchableWithoutFeedback>
     );

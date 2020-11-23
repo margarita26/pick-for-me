@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.5",
     "@emotion/core": "^10.1.1",
     "@emotion/native": "^11.0.0-rc.0",
     "@emotion/react": "^11.0.0-rc.0",
@@ -21,16 +22,22 @@
     "expo-location": "~9.0.0",
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
+    "graphql": "^15.4.0",
+    "graphql-tag": "^2.11.0",
+    "lottie-ios": "^3.1.8",
+    "lottie-react-native": "^3.5.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
+    "react-native-google-places-autocomplete": "^2.1.1",
     "react-native-ratings": "^7.3.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-star-rating": "^1.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "react-navigation-stack": "^2.10.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

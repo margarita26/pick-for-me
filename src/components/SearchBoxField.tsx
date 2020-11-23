@@ -1,8 +1,8 @@
 import styled from "@emotion/native";
-import React, { useState } from "react";
-import { TextInput, useWindowDimensions } from "react-native";
-import { colors, fontfamilies, fontSizes } from "../constants";
 import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+import { TextInput } from "react-native";
+import { colors, fontfamilies, fontSizes } from "../constants";
 import { fontAwesomeIcons } from "../constants/icons";
 
 type SearchBoxFieldProps = {
@@ -45,7 +45,7 @@ export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({ placeholder, val
                 placeholder={placeholder}
                 placeholderTextColor={colors.darkGrey}
                 keyboardAppearance={"dark"}
-                autoFocus={true}
+                autoFocus={false}
             />
         </StyledContainer>
     );
