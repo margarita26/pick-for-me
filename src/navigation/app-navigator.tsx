@@ -5,7 +5,6 @@ import { screens } from "../constants";
 import { AppSettingsContext } from "../context/app-settings";
 import { Onboarding } from "../screens";
 import { HomeNavigator } from "./home-navigator";
-import { keys } from "../constants/storage-keys";
 
 const RootStack = createStackNavigator();
 

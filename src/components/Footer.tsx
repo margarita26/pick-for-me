@@ -1,10 +1,11 @@
 import styled from "@emotion/native";
 import React from "react";
-import { colors } from "../constants";
-import { fontSizes } from "../constants/font-size";
 import { SimpleButton } from "./SimpleButton";
 
 type FooterProps = {
+    backgroundColor: string;
+    fontSize: string;
+    fontColor: string;
     leftButtonLabel: string | null;
     leftButtonPress: () => void;
     rightButtonLabel: string | null;
@@ -12,43 +13,41 @@ type FooterProps = {
 };
 
 type StyledContainerProps = {
-    leftButton: string | null;
+    backgroundColor: string;
 };
 
 const StyledContainer = styled.View<StyledContainerProps>`
-    background-color: ${colors.main};
+    background-color: ${(props: StyledContainerProps) => props.backgroundColor};
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     height: 10%;
-    opacity: 0.6;
+    opacity: 0.8;
 `;
 
 const StyledButtonContainer = styled.View`
     flex: 1;
 `;
 
-export const Footer: React.FC<FooterProps> = ({ leftButtonLabel, leftButtonPress, rightButtonLabel, rightButtonPress }) => {
+export const Footer: React.FC<FooterProps> = ({
+    backgroundColor,
+    fontSize,
+    fontColor,
+    leftButtonLabel,
+    leftButtonPress,
+    rightButtonLabel,
+    rightButtonPress,
+}) => {
     return (
-        <StyledContainer leftButton={leftButtonLabel}>
+        <StyledContainer backgroundColor={backgroundColor}>
             {leftButtonLabel && (
                 <StyledButtonContainer>
-                    <SimpleButton
-                        label={leftButtonLabel}
-                        fontSize={fontSizes.regular}
-                        fontColor={colors.white}
-                        onPress={leftButtonPress}
-                    />
+                    <SimpleButton label={leftButtonLabel} fontSize={fontSize} fontColor={fontColor} onPress={leftButtonPress} />
                 </StyledButtonContainer>
             )}
             {rightButtonLabel && (
                 <StyledButtonContainer>
-                    <SimpleButton
-                        label={rightButtonLabel}
-                        fontSize={fontSizes.regular}
-                        fontColor={colors.white}
-                        onPress={rightButtonPress}
-                    />
+                    <SimpleButton label={rightButtonLabel} fontSize={fontSize} fontColor={fontColor} onPress={rightButtonPress} />
                 </StyledButtonContainer>
             )}
         </StyledContainer>

@@ -1,24 +1,30 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
 import * as React from "react";
 import { createContext, useEffect, useState } from "react";
 import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
 import { ErrorReportingContext } from "./error-reporting";
+import { LocationData } from "../models";
+import { LocationObject } from "expo-location";
 
 export type AppSettingsContextProps = {
     setSettings: (key: string, val: any) => void;
     clearAll: () => void;
     isOnbordingCompleted: boolean | null;
+    userLocation: LocationData | null;
 };
 
 export const AppSettingsContext = createContext<AppSettingsContextProps>({
     setSettings: async () => null,
     clearAll: async () => null,
     isOnbordingCompleted: null,
+    userLocation: null,
 });
 
 export const AppSettingsProvider: React.FC = ({ children }) => {
     const { recordError } = React.useContext(ErrorReportingContext);
     const [isOnbordingCompleted, setisOnbordingCompleted] = useState<boolean | null>(null);
+    const [userLocation, setUserLocation] = useState<LocationData | null>(null);
 
     useEffect(() => {
         const bootstrapAsync = async () => {
@@ -36,6 +42,18 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
         bootstrapAsync();
     }, []);
 
+    useEffect(() => {
+        Location.watchPositionAsync(
+            { accuracy: Location.Accuracy.Highest, timeInterval: 10000, distanceInterval: 5 },
+            (position: LocationObject) => {
+                setUserLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            }
+        );
+    }, []);
+
     const setSettings = async (key: string, val: any) => {
         try {
             if (key === ONBOARDING_COMPLETE) {
@@ -46,6 +64,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
             recordError(error);
         }
     };
+
     const clearAll = async () => {
         try {
             setisOnbordingCompleted(false);
@@ -61,6 +80,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 setSettings,
                 clearAll,
                 isOnbordingCompleted,
+                userLocation,
             }}>
             {children}
         </AppSettingsContext.Provider>

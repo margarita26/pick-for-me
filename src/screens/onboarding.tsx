@@ -4,6 +4,7 @@ import React, { useContext, useRef } from "react";
 import { View } from "react-native";
 import { Footer, Page } from "../components";
 import { colors, ionicsIcons, ONBOARDING_COMPLETE } from "../constants";
+import { fontSizes } from "../constants/font-size";
 import { AppSettingsContext } from "../context/app-settings";
 
 const buttons = {
@@ -39,8 +40,11 @@ export const Onboarding: React.FC = () => {
                         geoToggle={false}
                     />
                     <Footer
+                        backgroundColor={colors.main}
+                        fontSize={fontSizes.regular}
+                        fontColor={colors.white}
                         leftButtonLabel={null}
-                        leftButtonPress={() => handlePageChange(0)}
+                        leftButtonPress={() => null}
                         rightButtonLabel={buttons.next}
                         rightButtonPress={() => handlePageChange(1)}
                     />
@@ -53,6 +57,9 @@ export const Onboarding: React.FC = () => {
                         geoToggle={false}
                     />
                     <Footer
+                        backgroundColor={colors.main}
+                        fontSize={fontSizes.regular}
+                        fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(0)}
                         rightButtonLabel={buttons.next}
@@ -67,6 +74,9 @@ export const Onboarding: React.FC = () => {
                         geoToggle={true}
                     />
                     <Footer
+                        backgroundColor={colors.main}
+                        fontSize={fontSizes.regular}
+                        fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
                         rightButtonLabel={buttons.continue}
