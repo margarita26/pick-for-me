@@ -9,7 +9,7 @@
 - use FlexBox for component layout
 - Use expo-location to get geolocation of the device (when enabled)
 - Implement GraphQl queries to get data from Yelp GraphQL endpoints
-- THE ULTIMATE GOAL: publish to apple store
+- THE ULTIMATE GOAL: publish to apple store and set up github actions for automatic deployment and linting
 
 ## Project set up
 
