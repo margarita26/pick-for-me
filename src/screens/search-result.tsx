@@ -1,20 +1,30 @@
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/native";
-import { RouteProp, useFocusEffect } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import React, { useContext, useState } from "react";
-import { Text } from "react-native";
+import React, { useContext } from "react";
+import { FlatList } from "react-native";
+import { BusinessContainer } from "../components/BusinessContainer";
 import { colors } from "../constants";
 import { screens } from "../constants/screens";
 import { AppSettingsContext } from "../context/app-settings";
 import { ErrorReportingContext } from "../context/error-reporting";
 import { GET_YELP_DATA } from "../context/graphql";
+import { SearchResultData } from "../models";
 import { RootStackParamList } from "../navigation";
 
 type SearchResultRouteParams = RouteProp<RootStackParamList, screens.searchResult>;
 
 type Props = {
     route: SearchResultRouteParams;
+};
+
+type SearchRequestVars = {
+    request: string;
+    price: string;
+    latitude: number | undefined;
+    longitude: number | undefined;
+    limit: number;
 };
 
 const StyledContainer = styled.View`
@@ -26,35 +36,23 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
     const { request, starRating } = route.params;
     const { recordError } = useContext(ErrorReportingContext);
     const { userLocation } = useContext(AppSettingsContext);
-    const [showAnimation, setShowAnimation] = useState<boolean>(true);
+
     const latitude = userLocation?.latitude;
     const longitude = userLocation?.longitude;
 
     const price = starRating.toString();
-    const limit = 3;
-    const radius = 1700;
+    const limit = 1;
 
-    const { loading, error, data } = useQuery(GET_YELP_DATA, {
+    const { loading, error, data } = useQuery<SearchResultData, SearchRequestVars>(GET_YELP_DATA, {
+        fetchPolicy: "cache-and-network",
         variables: {
-            request,
-            price,
-            latitude,
-            longitude,
-            limit,
-            radius,
+            request: request,
+            price: price,
+            latitude: latitude,
+            longitude: longitude,
+            limit: limit,
         },
     });
-
-    useFocusEffect(
-        React.useCallback(() => {
-            setShowAnimation(true);
-            const timer = setTimeout(() => setShowAnimation(false), 2000);
-            return () => {
-                setShowAnimation(true);
-                clearTimeout(timer);
-            };
-        }, [request])
-    );
 
     if (error) {
         recordError(error);
@@ -62,10 +60,23 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
 
     return (
         <StyledContainer>
-            {showAnimation || loading || data == undefined ? (
+            {loading ? (
                 <LottieView source={require("../assets/31454-food-prepared-food-app.json")} autoPlay loop />
             ) : (
-                <Text>""</Text>
+                <FlatList
+                    data={data?.search.business}
+                    renderItem={({ item }) => (
+                        <BusinessContainer
+                            name={item.name}
+                            phone={item.phone}
+                            rating={item.rating}
+                            reviewCount={item.review_count}
+                            address={item.location}
+                            photos={item.photos}
+                        />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
             )}
         </StyledContainer>
     );

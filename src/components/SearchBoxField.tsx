@@ -43,7 +43,7 @@ export const SearchBoxField: React.FC<SearchBoxFieldProps> = ({ placeholder, val
                 onChangeText={(text) => onTextChange(text)}
                 value={value}
                 placeholder={placeholder}
-                placeholderTextColor={colors.darkGrey}
+                placeholderTextColor={colors.lightGrey}
                 keyboardAppearance={"dark"}
                 autoFocus={false}
             />

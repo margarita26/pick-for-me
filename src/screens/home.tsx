@@ -28,11 +28,6 @@ const StyledContainer = styled.View`
     padding-top: 64px;
 `;
 
-const StyledFooterContainer = styled.View`
-    height: 8%;
-    background-color: ${colors.white};
-`;
-
 const StyledInnerContainer = styled.View`
     margin: 8px;
     width: 80%;
@@ -82,11 +77,11 @@ export const Home: React.FC = () => {
                     leftButtonLabel={null}
                     leftButtonPress={() => null}
                     rightButtonLabel={"Search"}
-                    rightButtonPress={() => navigation.navigate(screens.searchResult, { request: searchRequest, starRating: starCount })}
+                    rightButtonPress={() => {
+                        navigation.navigate(screens.searchResult, { request: searchRequest, starRating: starCount });
+                    }}
                 />
-                <StyledFooterContainer>
-                    <SimpleButton label={"Clear"} fontSize={fontSizes.heading} fontColor={colors.main} onPress={() => clearAll()} />
-                </StyledFooterContainer>
+                {/* <SimpleButton label={"Clear"} fontSize={fontSizes.heading} fontColor={colors.main} onPress={() => clearAll()} /> */}
             </StyledSafeAreaContainer>
         </TouchableWithoutFeedback>
     );
