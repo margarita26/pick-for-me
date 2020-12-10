@@ -4,14 +4,14 @@ import * as React from "react";
 import { createContext, useEffect, useState } from "react";
 import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
 import { ErrorReportingContext } from "./error-reporting";
-import { LocationData } from "../models";
+import { Coordinates } from "../models";
 import { LocationObject } from "expo-location";
 
 export type AppSettingsContextProps = {
     setSettings: (key: string, val: any) => void;
     clearAll: () => void;
     isOnbordingCompleted: boolean | null;
-    userLocation: LocationData | null;
+    userLocation: Coordinates | null;
 };
 
 export const AppSettingsContext = createContext<AppSettingsContextProps>({
@@ -24,7 +24,7 @@ export const AppSettingsContext = createContext<AppSettingsContextProps>({
 export const AppSettingsProvider: React.FC = ({ children }) => {
     const { recordError } = React.useContext(ErrorReportingContext);
     const [isOnbordingCompleted, setisOnbordingCompleted] = useState<boolean | null>(null);
-    const [userLocation, setUserLocation] = useState<LocationData | null>(null);
+    const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
     useEffect(() => {
         const bootstrapAsync = async () => {
@@ -44,8 +44,9 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
 
     useEffect(() => {
         Location.watchPositionAsync(
-            { accuracy: Location.Accuracy.Highest, timeInterval: 10000, distanceInterval: 5 },
+            {accuracy: Location.Accuracy.High, distanceInterval: 1610},
             (position: LocationObject) => {
+                console.log("resaving location");
                 setUserLocation({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
