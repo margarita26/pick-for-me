@@ -8,7 +8,7 @@
 - Use React Navigation 5 for navigation
 - use FlexBox for component layout
 - Use expo-location to get geolocation of the device (when enabled)
-- Implement GraphQl queries to get data from Yelp GraphQL endpoints
+- Implement GraphQl queries to get data from Yelp GraphQL endpoints using Apollo Client
 
 Extra: 
 - Publish to apple store and set up github actions for automatic deployment and linting
