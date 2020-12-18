@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createContext } from "react";
 import { Alert } from "react-native";
+import * as Sentry from "sentry-expo";
 
 export type ErrorReportingContextProps = {
     recordError: (error: Error) => void;
@@ -12,9 +13,8 @@ export const ErrorReportingContext = createContext<ErrorReportingContextProps>({
 
 export const ErrorReportingProvider: React.FC = ({ children }) => {
     const recordError = (error: Error) => {
-        try {
-            Alert.alert("ErrorReportingProvider: recordError - " + error);
-        } catch (error) {}
+        Sentry.Native.captureException(error);
+        console.log(error);
     };
 
     return (

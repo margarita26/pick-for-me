@@ -59,9 +59,6 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
             setLocationAsync(location);
         };
         watchLocation();
-        return () => {
-            locationAsync.remove();
-        };
     }, []);
 
     const setSettings = async (key: string, val: any) => {

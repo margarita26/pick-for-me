@@ -10,6 +10,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "petmeco-inc",
+            "project": "petmeco-inc",
+            "authToken": "4c2b18eff91848e58aa97e3c3cdb09a0ae70ab2d5baf4dbb9aec72d1835a0399"
+          }
+        }
+      ]
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
