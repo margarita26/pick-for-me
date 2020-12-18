@@ -2,7 +2,10 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import { color } from "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { colors } from "./src/constants";
 import { AppSettingsProvider, ErrorReportingProvider } from "./src/context";
 import { AppNavigator } from "./src/navigation";
 

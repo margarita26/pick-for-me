@@ -5,6 +5,7 @@ export type Business = {
     location: LocationData;
     name: string;
     phone: string;
+    distance: number;
     photos: string[];
     rating: number;
     review_count: number;

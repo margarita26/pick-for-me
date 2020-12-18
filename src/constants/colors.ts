@@ -7,4 +7,5 @@ export const colors = {
     grey: "#767577",
     darkGrey: "#3e3e3e",
     transparent: "transparent",
+    yellow: "#FDA50F",
 };

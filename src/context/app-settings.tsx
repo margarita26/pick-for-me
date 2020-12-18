@@ -26,6 +26,8 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     const [isOnbordingCompleted, setisOnbordingCompleted] = useState<boolean | null>(null);
     const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
+    const [locationAsync, setLocationAsync] = useState<any>(null);
+
     useEffect(() => {
         const bootstrapAsync = async () => {
             try {
@@ -43,16 +45,23 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        Location.watchPositionAsync(
-            {accuracy: Location.Accuracy.High, distanceInterval: 1610},
-            (position: LocationObject) => {
-                console.log("resaving location");
-                setUserLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
-            }
-        );
+        const watchLocation = async () => {
+            const location = await Location.watchPositionAsync(
+                { accuracy: Location.Accuracy.High, distanceInterval: 1610 },
+                (position: LocationObject) => {
+                    console.log("resaving location");
+                    setUserLocation({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                }
+            );
+            setLocationAsync(location);
+        };
+        watchLocation();
+        return () => {
+            locationAsync.remove();
+        };
     }, []);
 
     const setSettings = async (key: string, val: any) => {
