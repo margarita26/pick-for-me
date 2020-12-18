@@ -3,7 +3,7 @@ import ViewPager from "@react-native-community/viewpager";
 import React, { useContext, useRef } from "react";
 import { View } from "react-native";
 import { Footer, Page } from "../components";
-import { colors, ionicsIcons, ONBOARDING_COMPLETE } from "../constants";
+import { colors, ONBOARDING_COMPLETE } from "../constants";
 import { fontSizes } from "../constants/font-size";
 import { AppSettingsContext } from "../context/app-settings";
 
@@ -28,14 +28,13 @@ export const Onboarding: React.FC = () => {
     const handlePageChange = (pageNumber: number) => {
         pagerRef.current.setPage(pageNumber);
     };
-
     return (
         <StyledContainer>
             <StyledViewPager initialPage={0} ref={pagerRef}>
                 <View key="1">
                     <Page
                         backgroundColor={colors.main}
-                        iconName={ionicsIcons.wine}
+                        iconName={"ios-wine"}
                         title="Welcome to the restaurant picker app!"
                         geoToggle={false}
                     />
@@ -52,7 +51,7 @@ export const Onboarding: React.FC = () => {
                 <View key="2">
                     <Page
                         backgroundColor={colors.main}
-                        iconName={ionicsIcons.search}
+                        iconName={"ios-search"}
                         title="Tell us what you feel like getting along with your budget and get an instant recommendation"
                         geoToggle={false}
                     />
@@ -69,7 +68,7 @@ export const Onboarding: React.FC = () => {
                 <View key="3">
                     <Page
                         backgroundColor={colors.main}
-                        iconName={ionicsIcons.geoPin}
+                        iconName={"md-pin"}
                         title="Allow to share geolocation with us so we show our pick that is close to where you are ;)"
                         geoToggle={true}
                     />
