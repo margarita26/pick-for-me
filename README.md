@@ -9,7 +9,7 @@
 - use FlexBox for component layout
 - Use expo-location to get geolocation of the device (when enabled)
 - Implement GraphQl queries to get data from Yelp GraphQL endpoints using Apollo Client
-- Integrate Yelp API for search box autocomplete with suggestions
+- Integrate Yelp REST API for search box autocomplete with suggestions
 
 Extra: 
 - Publish to apple store and set up github actions for automatic deployment and linting
