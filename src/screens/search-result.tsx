@@ -2,8 +2,8 @@ import { useQuery } from "@apollo/client";
 import styled from "@emotion/native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import React, { useContext, useMemo } from "react";
-import { FlatList, View } from "react-native";
+import React, { useContext, useMemo, useState, useEffect } from "react";
+import { Alert, FlatList, View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { BusinessContainer } from "../components/BusinessContainer";
 import { colors } from "../constants";
@@ -63,14 +63,31 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
             price: price,
             latitude: latitude,
             longitude: longitude,
-            limit: limit,
+            limit: 49,
             sort_by: orderBy,
         },
     });
 
+    const [dataToShow, setDataToShow] = useState<any | undefined>(undefined);
+    const [index, setIndex] = useState<number>(limit);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+
     if (error) {
         recordError(error);
     }
+
+    const refresh = () => {
+        if (index + limit < 49) {
+            setRefreshing(true);
+            setDataToShow(data?.search.business.slice(index, index + limit));
+            setRefreshing(false);
+            setIndex(index + limit);
+        }
+    };
+
+    useEffect(() => {
+        setDataToShow(data?.search.business.slice(0, limit));
+    }, [loading]);
 
     return (
         <StyledContainer>
@@ -84,7 +101,9 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
                 </StyleLottieAnimationContainer>
             ) : (
                 <FlatList
-                    data={data?.search.business}
+                    data={dataToShow}
+                    onRefresh={refresh}
+                    refreshing={refreshing}
                     renderItem={({ item }) => {
                         return (
                             <TouchableWithoutFeedback onPress={() => navigation.navigate(screens.businessScreen, { business: item })}>
