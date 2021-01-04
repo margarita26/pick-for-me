@@ -2,8 +2,8 @@ import { useQuery } from "@apollo/client";
 import styled from "@emotion/native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import React, { useContext, useMemo, useState, useEffect } from "react";
-import { Alert, FlatList, View } from "react-native";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { FlatList, View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { BusinessContainer } from "../components/BusinessContainer";
 import { colors } from "../constants";
@@ -97,7 +97,7 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
                 </StyleLottieAnimationContainer>
             ) : data?.search.business.length == 0 || error ? (
                 <StyleLottieAnimationContainer>
-                    <LottieView source={require("../assets/not-found.json")} autoPlay loop />
+                    <LottieView source={require("../assets/not-found.json")} autoPlay />
                 </StyleLottieAnimationContainer>
             ) : (
                 <FlatList

@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { TitleImage } from "../components";
-import { HeaderButton } from "../components/HeaderButton";
 import { screens } from "../constants";
 import { colors } from "../constants/colors";
 import { Business } from "../models";

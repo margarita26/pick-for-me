@@ -67,7 +67,7 @@ const StyledPickContainer = styled.View`
 `;
 
 export const Home: React.FC = () => {
-    const [starCount, setStarCount] = useState<number>(2);
+    const [starCount, setStarCount] = useState<number>(3);
     const [businessCount, setBusinessCount] = useState<number>(3);
     const [searchRequest, setSearchRequest] = useState<string>("");
     const { clearAll } = useContext(AppSettingsContext);

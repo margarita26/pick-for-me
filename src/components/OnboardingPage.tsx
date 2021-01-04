@@ -60,8 +60,8 @@ export const Page: React.FC<PageProps> = ({ backgroundColor, iconName, title, ge
         const enableLocation = async () => {
             if (isEnabled) {
                 let { status } = await Location.requestPermissionsAsync();
-                if (status !== "granted") {
-                    console.log(status);
+                if (status == "granted") {
+                    
                 }
             }
         };

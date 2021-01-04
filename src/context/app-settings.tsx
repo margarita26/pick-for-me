@@ -25,8 +25,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     const { recordError } = React.useContext(ErrorReportingContext);
     const [isOnbordingCompleted, setisOnbordingCompleted] = useState<boolean | null>(null);
     const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
-
-    const [locationAsync, setLocationAsync] = useState<any>(null);
+    
 
     useEffect(() => {
         const bootstrapAsync = async () => {
@@ -56,9 +55,17 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                     });
                 }
             );
-            setLocationAsync(location);
         };
-        watchLocation();
+
+        const isLocationServiceEnabled = async() => { 
+            const isEnabled = await Location.hasServicesEnabledAsync();
+            console.log(isEnabled);
+            return isEnabled;
+        };
+      
+        if(isLocationServiceEnabled()){
+            watchLocation();
+        }
     }, []);
 
     const setSettings = async (key: string, val: any) => {
@@ -87,7 +94,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 setSettings,
                 clearAll,
                 isOnbordingCompleted,
-                userLocation,
+                userLocation,    
             }}>
             {children}
         </AppSettingsContext.Provider>
