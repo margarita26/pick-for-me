@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/native";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import React, { useContext, useState } from "react";
-import { FlatList, View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useContext, useMemo } from "react";
+import { FlatList, View } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { BusinessContainer } from "../components/BusinessContainer";
 import { colors } from "../constants";
 import { screens } from "../constants/screens";
@@ -26,6 +26,7 @@ type SearchRequestVars = {
     latitude: number | undefined;
     longitude: number | undefined;
     limit: number;
+    sort_by: string;
 };
 
 const StyledContainer = styled.View`
@@ -40,14 +41,19 @@ const StyleLottieAnimationContainer = styled.View`
 `;
 
 export const SearchResult: React.FC<Props> = ({ route }) => {
-    const { request, starRating, numberOfBusinesses } = route.params;
+    const { request, starRating, orderBy, numberOfBusinesses } = route.params;
     const { recordError } = useContext(ErrorReportingContext);
     const { userLocation } = useContext(AppSettingsContext);
+    const navigation = useNavigation();
 
     const latitude = userLocation?.latitude;
     const longitude = userLocation?.longitude;
 
-    const price = starRating.toString();
+    const price = useMemo(() => {
+        const temp = Array.from(Array.from({ length: parseInt(starRating) }, (_, i) => i + 1));
+        return temp.join(",");
+    }, [starRating]);
+
     const limit = numberOfBusinesses;
 
     const { loading, error, data } = useQuery<SearchResultData, SearchRequestVars>(GET_YELP_DATA, {
@@ -58,6 +64,7 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
             latitude: latitude,
             longitude: longitude,
             limit: limit,
+            sort_by: orderBy,
         },
     });
 
@@ -78,7 +85,13 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
             ) : (
                 <FlatList
                     data={data?.search.business}
-                    renderItem={({ item }) => <BusinessContainer business={item} />}
+                    renderItem={({ item }) => {
+                        return (
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate(screens.businessScreen, { business: item })}>
+                                <BusinessContainer business={item} />
+                            </TouchableWithoutFeedback>
+                        );
+                    }}
                     keyExtractor={(item, index) => index.toString()}
                     ListFooterComponent={() => <View style={{ paddingVertical: 16 }} />}
                 />

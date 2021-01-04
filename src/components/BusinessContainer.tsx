@@ -1,7 +1,7 @@
 import styled from "@emotion/native";
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
-import { Image, Linking, View } from "react-native";
+import { Image, Linking } from "react-native";
 import { colors, fontfamilies, fontSizes } from "../constants";
 import { Business } from "../models/business-data";
 
@@ -14,7 +14,7 @@ type TextProps = {
 };
 
 const StyledContainer = styled.View`
-    min-height: 128px;
+    min-height: 124px;
     padding: 4px;
     margin-top: 8px;
     margin-left: 8px;
@@ -40,7 +40,7 @@ const StyledBusinessInfoContainer = styled.View`
 const StyledBusinessNameContainer = styled.View`
     padding-left: 4px;
     padding-right: 4px;
-    justify-content: center;
+    justify-content: flex-start;
 `;
 
 const StyledIconsAndDetailsContainer = styled.View`
@@ -79,6 +79,7 @@ export const BusinessContainer: React.FC<BusinessContainerProps> = ({ business }
             <StyledBusinessInfoContainer>
                 <StyledBusinessNameContainer>
                     <StyledText fontSize={fontSizes.regular}>{business.name}</StyledText>
+                    <StyledText fontSize={fontSizes.regular}>{business.price}</StyledText>
                 </StyledBusinessNameContainer>
                 <StyledIconsAndDetailsContainer>
                     <StyledIconsContainer>

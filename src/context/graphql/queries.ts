@@ -1,21 +1,23 @@
 import { gql } from "@apollo/client";
 
 export const GET_YELP_DATA = gql`
-    query getData($request: String, $price: String, $latitude: Float, $longitude: Float, $limit: Int) {
+    query getData($request: String, $price: String, $latitude: Float, $longitude: Float, $limit: Int, $sort_by: String) {
         search(
             term: $request,
             price: $price,
             latitude: $latitude,
             longitude: $longitude,
             limit: $limit,
-            radius: 4000,
+            sort_by: $sort_by,
+            radius: 4828,
             open_now: true,
-            sort_by: "distance"
         ) {
             business {
+                url
                 phone
                 name
                 distance
+                price
                 rating
                 review_count
                 photos
@@ -27,6 +29,7 @@ export const GET_YELP_DATA = gql`
                     address1
                     city
                     state
+                    postal_code
                     country
                 }
             }

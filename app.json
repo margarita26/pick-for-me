@@ -39,6 +39,9 @@
     },
     "web": {
       "favicon": "./src/assets/logo_transparent_background.png"
+    },
+    "extra": {
+      "YELP_API_KEY": "HPId9afj0nWsz3oWPi8U16Rq5BDB9CsMuh5LeQsmD3qzoKkYhgGn_V1b1u3SHUe69jqu0P14sydfRb50nLD7uvZUfXl0hZO97flo0D2ds_5W4aKWLdvvlT_bTymrX3Yx"
     }
   }
 }

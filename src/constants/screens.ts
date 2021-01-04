@@ -3,4 +3,5 @@ export enum screens {
     home = "Home",
     homeNavigator = "HomeNavigator",
     searchResult = "SearchResult",
-};
+    businessScreen = "BusinessScreen",
+}

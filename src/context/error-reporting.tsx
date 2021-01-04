@@ -1,6 +1,5 @@
 import * as React from "react";
 import { createContext } from "react";
-import { Alert } from "react-native";
 import * as Sentry from "sentry-expo";
 
 export type ErrorReportingContextProps = {

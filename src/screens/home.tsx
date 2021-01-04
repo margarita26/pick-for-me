@@ -1,26 +1,22 @@
 import styled from "@emotion/native";
-import Slider from "@react-native-community/slider";
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useState } from "react";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import Constants from "expo-constants";
+import React, { useContext, useEffect, useState } from "react";
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import Autocomplete from "react-native-autocomplete-input";
 import StarRating from "react-native-star-rating";
-import { Footer, SimpleButton } from "../components";
+import { Footer } from "../components";
 import { SearchBoxField } from "../components/SearchBoxField";
 import { colors, fontfamilies, fontSizes } from "../constants";
 import { screens } from "../constants/screens";
 import { AppSettingsContext } from "../context/app-settings";
 import { ErrorReportingContext } from "../context/error-reporting";
-import { useEffect } from "react";
-import Select from "react-select";
 
-type StyledSafeAreaViewProps = {
-    color: string;
-    flex: number;
-};
+const sortTypes = ["distance", "best_match", "rating", "review_count"];
 
-const StyledSafeAreaContainer = styled.SafeAreaView<StyledSafeAreaViewProps>`
-    flex: ${(props: StyledSafeAreaViewProps) => props.flex};
-    background-color: ${(props: StyledSafeAreaViewProps) => props.color};
+const StyledSafeAreaContainer = styled.SafeAreaView`
+    flex: 1;
+    background-color: ${colors.white};
 `;
 
 const StyledContainer = styled.KeyboardAvoidingView`
@@ -41,54 +37,72 @@ const StyledInnerContainer = styled.View`
 `;
 
 const StyledInputContainer = styled.View`
-    margin-top: 8px;
-    height: 70px;
+    margin-top: 16px;
+    min-height: 70px;
     width: 100%;
+    justify-content: center;
 `;
 
-const StyledText = styled.Text`
-    color: ${colors.white};
+type TextProps = {
+    color: string;
+    size: string;
+};
+
+const StyledText = styled.Text<TextProps>`
+    color: ${(props: TextProps) => props.color};
     font-family: ${fontfamilies.ptSerif};
+    font-size: ${(props: TextProps) => props.size};
+    padding: 4px;
+`;
+
+const StyledPickContainer = styled.View`
+    border-radius: 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    padding: 4px;
 `;
 
 export const Home: React.FC = () => {
     const [starCount, setStarCount] = useState<number>(2);
-    const [businessCount, setBusinessCount] = useState<number>(1);
+    const [businessCount, setBusinessCount] = useState<number>(3);
     const [searchRequest, setSearchRequest] = useState<string>("");
     const { clearAll } = useContext(AppSettingsContext);
     const { recordError } = useContext(ErrorReportingContext);
     const { userLocation } = useContext(AppSettingsContext);
+    const [itemClicked, setItemClicked] = useState<boolean>(false);
+    const [orderBy, setOrderBy] = useState<string>(sortTypes[0]);
+    const arrNums = Array.from(Array.from({ length: 10 }, (_, i) => i + 1));
 
     const navigation = useNavigation();
-    const [autocompleteSuggests, setAutoCompleteSuggest] = useState<any>();
+    const [autocompleteSuggests, setAutoCompleteSuggest] = useState<AutocompleteTerms[] | undefined>();
 
     const handleSubmit = () => {
         navigation.navigate(screens.searchResult, {
             request: searchRequest,
             starRating: starCount,
+            orderBy: orderBy,
             numberOfBusinesses: businessCount,
         });
     };
 
     const getAutocompleteSuggestions = async () => {
-        console.log(searchRequest);
-        const token =
-            "HPId9afj0nWsz3oWPi8U16Rq5BDB9CsMuh5LeQsmD3qzoKkYhgGn_V1b1u3SHUe69jqu0P14sydfRb50nLD7uvZUfXl0hZO97flo0D2ds_5W4aKWLdvvlT_bTymrX3Yx";
-
-        await fetch(
+        fetch(
             `https://api.yelp.com/v3/autocomplete?text=${searchRequest}&latitude=${userLocation?.latitude}&longitude=${userLocation?.longitude}`,
             {
                 method: "GET",
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${Constants.manifest.extra.YELP_API_KEY}`,
                     "Accept-Language": "en_US",
                 },
             }
         )
             .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson);
-                setAutoCompleteSuggest(responseJson);
+            .then((responseJson: AutocompleteData) => {
+                setAutoCompleteSuggest(responseJson.terms);
             })
             .catch((error) => {
                 recordError(error);
@@ -96,24 +110,94 @@ export const Home: React.FC = () => {
     };
 
     useEffect(() => {
-        if (searchRequest != "") {
+        if (searchRequest != "" && !itemClicked) {
             getAutocompleteSuggestions();
         }
     }, [searchRequest]);
 
+    const picks = arrNums.map((item, ind) => {
+        return (
+            <TouchableOpacity
+                key={ind}
+                style={{
+                    padding: 4,
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderColor: item == businessCount ? colors.white : colors.transparent,
+                }}
+                onPress={() => setBusinessCount(item)}>
+                <StyledText color={item == businessCount ? colors.white : colors.main} size={fontSizes.regular}>
+                    {item}
+                </StyledText>
+            </TouchableOpacity>
+        );
+    });
+
+    const sortBy = sortTypes.map((item, ind) => {
+        return (
+            <TouchableOpacity key={ind} onPress={() => setOrderBy(item)}>
+                <StyledText color={item == orderBy ? colors.white : colors.main} size={fontSizes.regular}>
+                    {item}
+                </StyledText>
+            </TouchableOpacity>
+        );
+    });
+
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <StyledSafeAreaContainer flex={1} color={colors.white}>
+        <TouchableWithoutFeedback
+            onPress={() => {
+                Keyboard.dismiss();
+                setAutoCompleteSuggest(undefined);
+            }}>
+            <StyledSafeAreaContainer>
                 <StyledContainer behavior="padding">
                     <StyledInnerContainer>
-                        <StyledInputContainer>
-                            <SearchBoxField
-                                value={searchRequest}
-                                onTextChange={setSearchRequest}
-                                placeholder={"What are you looking for?"}
-                                onSubmit={handleSubmit}
+                        <View style={{ width: "100%" }}>
+                            <Autocomplete
+                                containerStyle={{ zIndex: 1 }}
+                                listStyle={{
+                                    position: "relative",
+                                    borderColor: colors.transparent,
+                                    borderRadius: 16,
+                                    marginTop: 4,
+                                    paddingHorizontal: 16,
+                                    opacity: 0.7,
+                                }}
+                                data={searchRequest != "" && autocompleteSuggests ? autocompleteSuggests : []}
+                                defaultValue={searchRequest}
+                                onChangeText={setSearchRequest}
+                                inputContainerStyle={{
+                                    borderColor: colors.transparent,
+                                }}
+                                renderTextInput={() => {
+                                    return (
+                                        <SearchBoxField
+                                            value={searchRequest}
+                                            onTextChange={(text) => {
+                                                setSearchRequest(text);
+                                                setItemClicked(false);
+                                            }}
+                                            placeholder={"What are you looking for?"}
+                                            onSubmit={handleSubmit}
+                                        />
+                                    );
+                                }}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        style={{ borderColor: colors.white }}
+                                        onPress={() => {
+                                            setSearchRequest(item.text);
+                                            setItemClicked(true);
+                                            setAutoCompleteSuggest(undefined);
+                                        }}>
+                                        <StyledText size={fontSizes.regular} color={colors.black}>
+                                            {item.text}
+                                        </StyledText>
+                                    </TouchableOpacity>
+                                )}
+                                keyExtractor={(item, index) => index.toString()}
                             />
-                        </StyledInputContainer>
+                        </View>
                         <StyledInputContainer>
                             <StarRating
                                 disabled={false}
@@ -135,17 +219,11 @@ export const Home: React.FC = () => {
                             />
                         </StyledInputContainer>
                         <StyledInputContainer>
-                            <Slider
-                                style={{ width: "100%", height: 40 }}
-                                minimumValue={1}
-                                maximumValue={20}
-                                minimumTrackTintColor={colors.white}
-                                maximumTrackTintColor={colors.black}
-                                onValueChange={(val: number) => setBusinessCount(val)}
-                                step={1}
-                            />
+                            <StyledPickContainer>{picks}</StyledPickContainer>
                         </StyledInputContainer>
-                        <StyledText>Number of places to find: {businessCount}</StyledText>
+                        <StyledInputContainer style={{ marginBottom: 16 }}>
+                            <StyledPickContainer>{sortBy}</StyledPickContainer>
+                        </StyledInputContainer>
                     </StyledInnerContainer>
                 </StyledContainer>
                 <Footer
