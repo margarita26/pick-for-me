@@ -2,6 +2,7 @@ import styled from "@emotion/native";
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
 import { Image, Linking } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors, fontfamilies, fontSizes } from "../constants";
 import { Business } from "../models/business-data";
 
@@ -89,9 +90,12 @@ export const BusinessContainer: React.FC<BusinessContainerProps> = ({ business }
                         <FontAwesome name="map-pin" size={16} color={colors.darkGrey} style={{ margin: 4 }} />
                     </StyledIconsContainer>
                     <StyledBusinessDetailsContainer>
-                        <StyledText onPress={() => Linking.openURL(`tel:${business.phone}`)} fontSize={fontSizes.regular}>
-                            {business.phone}
-                        </StyledText>
+                        <TouchableOpacity onPress={() => Linking.openURL(`tel:${business.phone}`)}>
+                            <StyledText
+                                fontSize={fontSizes.regular}>
+                                {business.phone}
+                            </StyledText>
+                        </TouchableOpacity>
                         <StyledText fontSize={fontSizes.regular}>{business.rating}</StyledText>
                         <StyledText fontSize={fontSizes.regular}>{business.review_count}</StyledText>
                         <StyledText fontSize={fontSizes.regular}>{getMiles(business.distance)} miles</StyledText>

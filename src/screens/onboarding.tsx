@@ -6,6 +6,7 @@ import { Footer, Page } from "../components";
 import { colors, ONBOARDING_COMPLETE } from "../constants";
 import { fontSizes } from "../constants/font-size";
 import { AppSettingsContext } from "../context/app-settings";
+import * as Location from 'expo-location';
 
 const buttons = {
     back: "Back",
@@ -23,11 +24,16 @@ const StyledContainer = styled.View`
 
 export const Onboarding: React.FC = () => {
     const pagerRef = useRef(null);
-    const { setSettings } = useContext(AppSettingsContext);
+    const { setSettings, userLocation } = useContext(AppSettingsContext);
 
     const handlePageChange = (pageNumber: number) => {
         pagerRef.current.setPage(pageNumber);
     };
+
+    const locationEnabled = async() => {
+      return await Location.hasServicesEnabledAsync();
+    }
+
     return (
         <StyledContainer>
             <StyledViewPager initialPage={0} ref={pagerRef}>
@@ -69,7 +75,7 @@ export const Onboarding: React.FC = () => {
                     <Page
                         backgroundColor={colors.main}
                         iconName={"md-pin"}
-                        title="Allow to share geolocation with us so we show our pick that is close to where you are ;)"
+                        title="Please allow to share your geolocation so we can personalize our recomendations;)"
                         geoToggle={true}
                     />
                     <Footer
@@ -78,7 +84,7 @@ export const Onboarding: React.FC = () => {
                         fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
-                        rightButtonLabel={buttons.continue}
+                        rightButtonLabel={userLocation? buttons.continue : null}
                         rightButtonPress={() => setSettings(ONBOARDING_COMPLETE, JSON.stringify(true))}
                     />
                 </View>

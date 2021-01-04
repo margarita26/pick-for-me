@@ -59,7 +59,6 @@ export const BusinessScreen: React.FC<Props> = ({ route }) => {
         ) : null;
     };
 
-    console.log(business?.name);
     return (
         <StyledContainer>
             {business?.coordinates && userLocation && (

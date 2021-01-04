@@ -4,4 +4,5 @@ export enum screens {
     homeNavigator = "HomeNavigator",
     searchResult = "SearchResult",
     businessScreen = "BusinessScreen",
+    errorScreen = "ErrorScreen",
 }
