@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
+import { LocationObject } from "expo-location";
 import * as React from "react";
 import { createContext, useEffect, useState } from "react";
 import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
-import { ErrorReportingContext } from "./error-reporting";
 import { Coordinates } from "../models";
-import { LocationObject } from "expo-location";
+import { ErrorReportingContext } from "./error-reporting";
 
 export type AppSettingsContextProps = {
     setSettings: (key: string, val: any) => void;
@@ -47,7 +47,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     useEffect(() => {
         const watchLocation = async () => {
             const location = await Location.watchPositionAsync(
-                { accuracy: Location.Accuracy.High, distanceInterval: 1610 },
+                { accuracy: Location.Accuracy.High, distanceInterval: 805 },
                 (position: LocationObject) => {
                     console.log("resaving location");
                     setUserLocation({

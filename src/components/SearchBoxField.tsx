@@ -1,7 +1,7 @@
 import styled from "@emotion/native";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
-import { TextInput, View } from "react-native";
+import { TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors, fontfamilies, fontSizes } from "../constants";
 
@@ -13,7 +13,6 @@ type SearchBoxFieldProps = {
 };
 
 const StyledContainer = styled.View`
-    flex: 1;
     flex-direction: row;
     align-items: center;
     padding: 8px;
@@ -21,6 +20,7 @@ const StyledContainer = styled.View`
     background-color: ${colors.white};
     border-width: 1px;
     border-radius: 16px;
+    height: 70px;
 `;
 
 const StyledIconContainer = styled.View`

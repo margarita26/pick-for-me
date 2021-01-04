@@ -4,8 +4,9 @@ export type Coordinates = {
 };
 
 export type LocationData = {
-    adress: string;
+    address1: string;
     city: string;
     state: string;
+    postal_code: string;
     country: string;
 };

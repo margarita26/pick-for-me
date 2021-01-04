@@ -1,3 +1,3 @@
 export const fontfamilies = {
-    ptSerif : "PTSerif",
-}
+    ptSerif: "PTSerif",
+};
