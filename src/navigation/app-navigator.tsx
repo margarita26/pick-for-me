@@ -10,7 +10,7 @@ const RootStack = createStackNavigator();
 
 export const AppNavigator: React.FC = () => {
     const navigationRef = useRef(null);
-    const { isOnbordingCompleted, userLocation } = useContext(AppSettingsContext);
+    const { isOnbordingCompleted } = useContext(AppSettingsContext);
 
     return (
         <NavigationContainer ref={navigationRef}>
