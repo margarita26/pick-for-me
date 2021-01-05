@@ -6,7 +6,7 @@ import { Footer, Page } from "../components";
 import { colors, ONBOARDING_COMPLETE } from "../constants";
 import { fontSizes } from "../constants/font-size";
 import { AppSettingsContext } from "../context/app-settings";
-import * as Location from "expo-location";
+import * as Location from 'expo-location';
 
 const buttons = {
     back: "Back",
@@ -25,10 +25,18 @@ const StyledContainer = styled.View`
 export const Onboarding: React.FC = () => {
     const pagerRef = useRef(null);
     const { setSettings, userLocation } = useContext(AppSettingsContext);
+    const [showContinueButton, setShowContinueButton] = useState<boolean>(false);
 
     const handlePageChange = (pageNumber: number) => {
         pagerRef.current.setPage(pageNumber);
     };
+
+    useEffect(() => {
+        if(userLocation){
+            setShowContinueButton(true);
+        }
+    }, [userLocation])
+
 
     return (
         <StyledContainer>
@@ -80,7 +88,7 @@ export const Onboarding: React.FC = () => {
                         fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
-                        rightButtonLabel={buttons.continue}
+                        rightButtonLabel={showContinueButton? buttons.continue : null}
                         rightButtonPress={() => setSettings(ONBOARDING_COMPLETE, JSON.stringify(true))}
                     />
                 </View>
