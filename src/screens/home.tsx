@@ -2,7 +2,7 @@ import styled from "@emotion/native";
 import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import React, { useContext, useEffect, useState } from "react";
-import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View, Text } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import StarRating from "react-native-star-rating";
 import { Footer } from "../components";
@@ -70,11 +70,14 @@ export const Home: React.FC = () => {
     const [starCount, setStarCount] = useState<number>(3);
     const [businessCount, setBusinessCount] = useState<number>(3);
     const [searchRequest, setSearchRequest] = useState<string>("");
+    const [itemClicked, setItemClicked] = useState<boolean>(false);
+    const [orderBy, setOrderBy] = useState<string>(sortTypes[0]);
+    const [showOrderBy, setShowOrderBy] = useState<boolean>(false);
+
     const { clearAll } = useContext(AppSettingsContext);
     const { recordError } = useContext(ErrorReportingContext);
     const { userLocation } = useContext(AppSettingsContext);
-    const [itemClicked, setItemClicked] = useState<boolean>(false);
-    const [orderBy, setOrderBy] = useState<string>(sortTypes[0]);
+
     const arrNums = Array.from(Array.from({ length: 10 }, (_, i) => i + 1));
 
     const navigation = useNavigation();
@@ -221,9 +224,21 @@ export const Home: React.FC = () => {
                         <StyledInputContainer>
                             <StyledPickContainer>{picks}</StyledPickContainer>
                         </StyledInputContainer>
-                        <StyledInputContainer style={{ marginBottom: 16 }}>
-                            <StyledPickContainer>{sortBy}</StyledPickContainer>
-                        </StyledInputContainer>
+                        {showOrderBy ? (
+                            <StyledInputContainer style={{ marginBottom: 16 }}>
+                                <StyledPickContainer>{sortBy}</StyledPickContainer>
+                            </StyledInputContainer>
+                        ) : (
+                            <StyledInputContainer>
+                                <TouchableOpacity
+                                    style={{ alignItems: "center", justifyContent: "center" }}
+                                    onPress={() => setShowOrderBy(!showOrderBy)}>
+                                    <StyledText style={{opacity:0.4}} color={colors.white} size={fontSizes.regular}>
+                                        Show order by
+                                    </StyledText>
+                                </TouchableOpacity>
+                            </StyledInputContainer>
+                        )}
                     </StyledInnerContainer>
                 </StyledContainer>
                 <Footer
