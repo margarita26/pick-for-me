@@ -12,7 +12,7 @@ import { screens } from "../constants/screens";
 import { AppSettingsContext } from "../context/app-settings";
 import { ErrorReportingContext } from "../context/error-reporting";
 
-const sortTypes = ["distance", "best_match", "rating", "review_count"];
+const sortTypes = ["distance", "recommended", "rating", "most reviewed"];
 
 const StyledSafeAreaContainer = styled.SafeAreaView`
     flex: 1;
@@ -138,7 +138,11 @@ export const Home: React.FC = () => {
 
     const sortBy = sortTypes.map((item, ind) => {
         return (
-            <TouchableOpacity key={ind} onPress={() => setOrderBy(item)}>
+            <TouchableOpacity
+                key={ind}
+                onPress={() => {
+                    setOrderBy(item);
+                }}>
                 <StyledText color={item == orderBy ? colors.white : colors.main} size={fontSizes.regular}>
                     {item}
                 </StyledText>
@@ -232,9 +236,9 @@ export const Home: React.FC = () => {
                             <StyledInputContainer>
                                 <TouchableOpacity
                                     style={{ alignItems: "center", justifyContent: "center" }}
-                                    onPress={() => setShowOrderBy(!showOrderBy)}>
-                                    <StyledText style={{opacity:0.4}} color={colors.white} size={fontSizes.regular}>
-                                        Show order by
+                                    onPress={() => setShowOrderBy(true)}>
+                                    <StyledText style={{ opacity: 0.4 }} color={colors.white} size={fontSizes.regular}>
+                                        Sort results by
                                     </StyledText>
                                 </TouchableOpacity>
                             </StyledInputContainer>

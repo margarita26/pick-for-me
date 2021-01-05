@@ -1,12 +1,11 @@
 import styled from "@emotion/native";
 import ViewPager from "@react-native-community/viewpager";
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Footer, Page } from "../components";
 import { colors, ONBOARDING_COMPLETE } from "../constants";
 import { fontSizes } from "../constants/font-size";
 import { AppSettingsContext } from "../context/app-settings";
-import * as Location from 'expo-location';
 
 const buttons = {
     back: "Back",
@@ -32,11 +31,10 @@ export const Onboarding: React.FC = () => {
     };
 
     useEffect(() => {
-        if(userLocation){
+        if (userLocation) {
             setShowContinueButton(true);
         }
-    }, [userLocation])
-
+    }, [userLocation]);
 
     return (
         <StyledContainer>
@@ -88,7 +86,7 @@ export const Onboarding: React.FC = () => {
                         fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
-                        rightButtonLabel={showContinueButton? buttons.continue : null}
+                        rightButtonLabel={showContinueButton ? buttons.continue : null}
                         rightButtonPress={() => setSettings(ONBOARDING_COMPLETE, JSON.stringify(true))}
                     />
                 </View>
