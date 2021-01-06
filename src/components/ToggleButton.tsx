@@ -4,7 +4,7 @@ import { colors } from "../constants/colors";
 
 type ToggleButtonProps = {
     isEnabled: boolean;
-    toggleSwitch: () => void;
+    toggleSwitch: (val : boolean) => void;
 };
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({ isEnabled, toggleSwitch }) => {

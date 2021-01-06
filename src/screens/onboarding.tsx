@@ -1,7 +1,7 @@
 import styled from "@emotion/native";
 import ViewPager from "@react-native-community/viewpager";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Footer, Page } from "../components";
 import { colors, ONBOARDING_COMPLETE } from "../constants";
 import { fontSizes } from "../constants/font-size";
@@ -23,18 +23,21 @@ const StyledContainer = styled.View`
 
 export const Onboarding: React.FC = () => {
     const pagerRef = useRef(null);
-    const { setSettings, userLocation } = useContext(AppSettingsContext);
+    const { isLocationEnabled, setSettings } = useContext(AppSettingsContext);
     const [showContinueButton, setShowContinueButton] = useState<boolean>(false);
 
     const handlePageChange = (pageNumber: number) => {
         pagerRef.current.setPage(pageNumber);
     };
 
-    useEffect(() => {
-        if (userLocation) {
-            setShowContinueButton(true);
+    const handleContinue = () =>{
+        if(isLocationEnabled) {
+            setSettings(ONBOARDING_COMPLETE, JSON.stringify(true));
         }
-    }, [userLocation]);
+        else { 
+            Alert.alert("Please enable location, isn't that's why you are here ;)")
+        }
+    }
 
     return (
         <StyledContainer>
@@ -43,7 +46,7 @@ export const Onboarding: React.FC = () => {
                     <Page
                         backgroundColor={colors.main}
                         iconName={"ios-wine"}
-                        title="Welcome to the restaurant picker app!"
+                        title="Welcome to the open business picker app!"
                         geoToggle={false}
                     />
                     <Footer
@@ -60,7 +63,7 @@ export const Onboarding: React.FC = () => {
                     <Page
                         backgroundColor={colors.main}
                         iconName={"ios-search"}
-                        title="Tell us what you feel like getting along with your budget and get an instant recommendation"
+                        title="Tell us what you feel like doing along with your budget and get an instant recommendation"
                         geoToggle={false}
                     />
                     <Footer
@@ -86,8 +89,8 @@ export const Onboarding: React.FC = () => {
                         fontColor={colors.white}
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
-                        rightButtonLabel={showContinueButton ? buttons.continue : null}
-                        rightButtonPress={() => setSettings(ONBOARDING_COMPLETE, JSON.stringify(true))}
+                        rightButtonLabel={buttons.continue}
+                        rightButtonPress={() => handleContinue()}
                     />
                 </View>
             </StyledViewPager>

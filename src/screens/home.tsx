@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View, Text } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import StarRating from "react-native-star-rating";
-import { Footer } from "../components";
+import { Footer, SimpleButton } from "../components";
 import { SearchBoxField } from "../components/SearchBoxField";
 import { colors, fontfamilies, fontSizes } from "../constants";
 import { screens } from "../constants/screens";
