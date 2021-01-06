@@ -24,20 +24,18 @@ const StyledContainer = styled.View`
 export const Onboarding: React.FC = () => {
     const pagerRef = useRef(null);
     const { isLocationEnabled, setSettings } = useContext(AppSettingsContext);
-    const [showContinueButton, setShowContinueButton] = useState<boolean>(false);
 
     const handlePageChange = (pageNumber: number) => {
         pagerRef.current.setPage(pageNumber);
     };
 
-    const handleContinue = () =>{
-        if(isLocationEnabled) {
+    const handleContinue = () => {
+        if (isLocationEnabled) {
             setSettings(ONBOARDING_COMPLETE, JSON.stringify(true));
+        } else {
+            Alert.alert("Please enable location, isn't that's why you are here ;)");
         }
-        else { 
-            Alert.alert("Please enable location, isn't that's why you are here ;)")
-        }
-    }
+    };
 
     return (
         <StyledContainer>
@@ -90,7 +88,7 @@ export const Onboarding: React.FC = () => {
                         leftButtonLabel={buttons.back}
                         leftButtonPress={() => handlePageChange(1)}
                         rightButtonLabel={buttons.continue}
-                        rightButtonPress={() => handleContinue()}
+                        rightButtonPress={handleContinue}
                     />
                 </View>
             </StyledViewPager>

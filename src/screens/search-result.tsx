@@ -13,8 +13,7 @@ import { ErrorReportingContext } from "../context/error-reporting";
 import { GET_YELP_DATA } from "../context/graphql";
 import { SearchResultData } from "../models";
 import { RootStackParamList } from "../navigation";
-import { AntDesign } from '@expo/vector-icons'; 
-
+import { AntDesign } from "@expo/vector-icons";
 
 type SearchResultRouteParams = RouteProp<RootStackParamList, screens.searchResult>;
 
