@@ -19,4 +19,7 @@ Extra:
 - `npm i`
 - `expo start`
 - scan QR code to run on your device or select a simulator
+
+or go to 
+- https://expo.io/@margarita1026/projects/pick-for-me and scan the QR code there
  
