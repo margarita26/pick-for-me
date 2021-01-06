@@ -2,8 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
 import * as React from "react";
-import { createContext, useEffect, useState } from "react";
-import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
+import { createContext, useContext, useEffect, useState } from "react";
+import { IS_LOCATION_ENABLED, ONBOARDING_COMPLETE } from "../constants/storage-keys";
 import { Coordinates } from "../models";
 import { ErrorReportingContext } from "./error-reporting";
 
@@ -12,6 +12,8 @@ export type AppSettingsContextProps = {
     clearAll: () => void;
     isOnbordingCompleted: boolean | null;
     userLocation: Coordinates | null;
+    watchUserLocation: () => void;
+    isLocationEnabled: boolean | null;
 };
 
 export const AppSettingsContext = createContext<AppSettingsContextProps>({
@@ -19,11 +21,14 @@ export const AppSettingsContext = createContext<AppSettingsContextProps>({
     clearAll: async () => null,
     isOnbordingCompleted: null,
     userLocation: null,
+    watchUserLocation: async () => null,
+    isLocationEnabled: null,
 });
 
 export const AppSettingsProvider: React.FC = ({ children }) => {
-    const { recordError } = React.useContext(ErrorReportingContext);
+    const { recordError } = useContext(ErrorReportingContext);
     const [isOnbordingCompleted, setisOnbordingCompleted] = useState<boolean | null>(null);
+    const [isLocationEnabled, setIsLocationEnabled] = useState<boolean | null>(null);
     const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
     useEffect(() => {
@@ -32,45 +37,39 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 const onboardingResult = await AsyncStorage.getItem(ONBOARDING_COMPLETE);
                 if (onboardingResult) {
                     setisOnbordingCompleted(JSON.parse(onboardingResult));
-                    return;
+                }
+                const locationEnabled = await AsyncStorage.getItem(IS_LOCATION_ENABLED);
+                if (locationEnabled) {
+                    await watchUserLocation();
+                    setIsLocationEnabled(JSON.parse(locationEnabled));
                 }
             } catch (e) {
                 recordError(e);
             }
-            setisOnbordingCompleted(null);
         };
         bootstrapAsync();
     }, []);
 
-    useEffect(() => {
-        const watchLocation = async () => {
-            const location = await Location.watchPositionAsync(
-                { accuracy: Location.Accuracy.High, distanceInterval: 805 },
-                (position: LocationObject) => {
-                    console.log("resaving location");
-                    setUserLocation({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    });
-                }
-            );
-        };
-
-        const isLocationServiceEnabled = async () => {
-            const isEnabled = await Location.hasServicesEnabledAsync();
-            console.log(isEnabled);
-            return isEnabled;
-        };
-
-        if (isLocationServiceEnabled()) {
-            watchLocation();
-        }
-    }, []);
+    const watchUserLocation = async () => {
+        await Location.watchPositionAsync({ accuracy: Location.Accuracy.High, distanceInterval: 805 }, (position: LocationObject) => {
+            console.log("saving location");
+            setUserLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            });
+        }).catch((e) => {
+            recordError(e);
+            console.log(e);
+        });
+    };
 
     const setSettings = async (key: string, val: any) => {
         try {
             if (key === ONBOARDING_COMPLETE) {
                 setisOnbordingCompleted(true);
+            }
+            if (key === IS_LOCATION_ENABLED) {
+                setIsLocationEnabled(true);
             }
             await AsyncStorage.setItem(key, val);
         } catch (error) {
@@ -81,6 +80,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
     const clearAll = async () => {
         try {
             setisOnbordingCompleted(false);
+            setIsLocationEnabled(false);
             AsyncStorage.clear();
         } catch (error) {
             recordError(error);
@@ -94,6 +94,8 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 clearAll,
                 isOnbordingCompleted,
                 userLocation,
+                watchUserLocation,
+                isLocationEnabled,
             }}>
             {children}
         </AppSettingsContext.Provider>

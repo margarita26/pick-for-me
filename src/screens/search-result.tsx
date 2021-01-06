@@ -13,6 +13,8 @@ import { ErrorReportingContext } from "../context/error-reporting";
 import { GET_YELP_DATA } from "../context/graphql";
 import { SearchResultData } from "../models";
 import { RootStackParamList } from "../navigation";
+import { AntDesign } from '@expo/vector-icons'; 
+
 
 type SearchResultRouteParams = RouteProp<RootStackParamList, screens.searchResult>;
 
@@ -54,6 +56,10 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
         return temp.join(",");
     }, [starRating]);
 
+    const sort_by = useMemo(() => {
+        return orderBy == "recommended" ? "best_match" : orderBy == "most reviewed" ? "review_count" : orderBy;
+    }, [orderBy]);
+
     const limit = numberOfBusinesses;
 
     const { loading, error, data } = useQuery<SearchResultData, SearchRequestVars>(GET_YELP_DATA, {
@@ -64,7 +70,7 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
             latitude: latitude,
             longitude: longitude,
             limit: 49,
-            sort_by: orderBy,
+            sort_by: sort_by,
         },
     });
 
@@ -77,7 +83,7 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
     }
 
     const refresh = () => {
-        if (index + limit < 49) {
+        if (data?.search && index + limit < data?.search.business.length) {
             setRefreshing(true);
             setDataToShow(data?.search.business.slice(index, index + limit));
             setRefreshing(false);
@@ -97,7 +103,7 @@ export const SearchResult: React.FC<Props> = ({ route }) => {
                 </StyleLottieAnimationContainer>
             ) : data?.search.business.length == 0 || error ? (
                 <StyleLottieAnimationContainer>
-                    <LottieView source={require("../assets/not-found.json")} autoPlay />
+                    <AntDesign name="frowno" size={128} color="white" />
                 </StyleLottieAnimationContainer>
             ) : (
                 <FlatList
