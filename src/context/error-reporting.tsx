@@ -13,7 +13,7 @@ export const ErrorReportingContext = createContext<ErrorReportingContextProps>({
 export const ErrorReportingProvider: React.FC = ({ children }) => {
     const recordError = (error: Error) => {
         Sentry.Native.captureException(error);
-        console.log(error);
+        console.log("Error ", error);
     };
 
     return (

@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
         );
     });
 
-    console.log(userLocation);
+    console.log("User location, in home ", userLocation);
 
     return (
         <TouchableWithoutFeedback

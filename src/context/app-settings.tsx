@@ -37,15 +37,14 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 const onboardingResult = await AsyncStorage.getItem(ONBOARDING_COMPLETE);
                 if (onboardingResult) {
                     setisOnbordingCompleted(JSON.parse(onboardingResult));
-                    console.log(onboardingResult);
+                    console.log("onboarding ", onboardingResult);
                 }
                 const locationEnabled = await AsyncStorage.getItem(IS_LOCATION_ENABLED);
                 if (locationEnabled) {
                     setIsLocationEnabled(JSON.parse(locationEnabled));
                     await watchUserLocation();
-                    console.log(isLocationEnabled);
+                    console.log("location enabled ", isLocationEnabled);
                 }
-
             } catch (e) {
                 recordError(e);
             }
@@ -55,14 +54,12 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
 
     const watchUserLocation = async () => {
         await Location.watchPositionAsync({ accuracy: Location.Accuracy.High, distanceInterval: 805 }, (position: LocationObject) => {
-            console.log("saving location");
             setUserLocation({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
             });
         }).catch((e) => {
             recordError(e);
-            console.log(e);
         });
     };
 
