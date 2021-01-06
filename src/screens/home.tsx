@@ -1,6 +1,7 @@
 import styled from "@emotion/native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
+import { requestPermissionsAsync } from "expo-location";
 import React, { useContext, useEffect, useState } from "react";
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View, Text } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
@@ -74,7 +75,7 @@ export const Home: React.FC = () => {
     const [orderBy, setOrderBy] = useState<string>(sortTypes[0]);
     const [showOrderBy, setShowOrderBy] = useState<boolean>(false);
 
-    const { clearAll } = useContext(AppSettingsContext);
+    const { clearAll, isLocationEnabled } = useContext(AppSettingsContext);
     const { recordError } = useContext(ErrorReportingContext);
     const { userLocation } = useContext(AppSettingsContext);
 
@@ -84,16 +85,18 @@ export const Home: React.FC = () => {
     const [autocompleteSuggests, setAutoCompleteSuggest] = useState<AutocompleteTerms[] | undefined>();
 
     const handleSubmit = () => {
-        navigation.navigate(screens.searchResult, {
-            request: searchRequest,
-            starRating: starCount,
-            orderBy: orderBy,
-            numberOfBusinesses: businessCount,
-        });
+        if (isLocationEnabled) {
+            navigation.navigate(screens.searchResult, {
+                request: searchRequest,
+                starRating: starCount,
+                orderBy: orderBy,
+                numberOfBusinesses: businessCount,
+            });
+        }
     };
 
     const getAutocompleteSuggestions = async () => {
-        fetch(
+        await fetch(
             `https://api.yelp.com/v3/autocomplete?text=${searchRequest}&latitude=${userLocation?.latitude}&longitude=${userLocation?.longitude}`,
             {
                 method: "GET",
@@ -149,8 +152,6 @@ export const Home: React.FC = () => {
             </TouchableOpacity>
         );
     });
-
-    console.log("User location, in home ", userLocation);
 
     return (
         <TouchableWithoutFeedback

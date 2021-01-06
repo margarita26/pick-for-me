@@ -1,12 +1,9 @@
 import styled from "@emotion/native";
 import { Ionicons as Icon } from "@expo/vector-icons";
-import * as Location from "expo-location";
 import React, { useContext, useEffect, useState } from "react";
 import { colors, fontfamilies, fontSizes } from "../constants";
-import { ToggleButton } from "./ToggleButton";
 import { AppSettingsContext } from "../context/app-settings";
-import { IS_LOCATION_ENABLED } from "../constants/storage-keys";
-import { Alert } from "react-native";
+import { ToggleButton } from "./ToggleButton";
 
 type PageProps = {
     backgroundColor: string;
@@ -55,20 +52,12 @@ const StyledText = styled.Text`
 
 export const Page: React.FC<PageProps> = ({ backgroundColor, iconName, title, geoToggle }) => {
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
-    const { setSettings, watchUserLocation } = useContext(AppSettingsContext);
+    const { requestLocationPermission } = useContext(AppSettingsContext);
 
     useEffect(() => {
         const askLocationPermission = async () => {
             if (isEnabled) {
-                let { status } = await Location.requestPermissionsAsync();
-                console.log(status);
-                if (status == "granted") {
-                    setSettings(IS_LOCATION_ENABLED, JSON.stringify(true));
-                    await watchUserLocation();
-                }
-                if (status == "denied") {
-                    Alert.alert("Please change location permissions in settings");
-                }
+                await requestLocationPermission();
             }
         };
         askLocationPermission();

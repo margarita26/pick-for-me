@@ -3,7 +3,8 @@ import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
 import * as React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { IS_LOCATION_ENABLED, ONBOARDING_COMPLETE } from "../constants/storage-keys";
+import { Alert } from "react-native";
+import { ONBOARDING_COMPLETE } from "../constants/storage-keys";
 import { Coordinates } from "../models";
 import { ErrorReportingContext } from "./error-reporting";
 
@@ -12,7 +13,7 @@ export type AppSettingsContextProps = {
     clearAll: () => void;
     isOnbordingCompleted: boolean | null;
     userLocation: Coordinates | null;
-    watchUserLocation: () => void;
+    requestLocationPermission: () => void;
     isLocationEnabled: boolean | null;
 };
 
@@ -21,7 +22,7 @@ export const AppSettingsContext = createContext<AppSettingsContextProps>({
     clearAll: async () => null,
     isOnbordingCompleted: null,
     userLocation: null,
-    watchUserLocation: async () => null,
+    requestLocationPermission: async () => null,
     isLocationEnabled: null,
 });
 
@@ -39,11 +40,13 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                     setisOnbordingCompleted(JSON.parse(onboardingResult));
                     console.log("onboarding ", onboardingResult);
                 }
-                const locationEnabled = await AsyncStorage.getItem(IS_LOCATION_ENABLED);
-                if (locationEnabled) {
-                    setIsLocationEnabled(JSON.parse(locationEnabled));
+                
+                const { status } = await Location.getPermissionsAsync();
+                if (status == "granted") {
+                    setIsLocationEnabled(true);
                     await watchUserLocation();
-                    console.log("location enabled ", isLocationEnabled);
+                } else {
+                    await requestLocationPermission();
                 }
             } catch (e) {
                 recordError(e);
@@ -52,6 +55,16 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
         bootstrapAsync();
     }, []);
 
+    const requestLocationPermission = async () => {
+        let { status } = await Location.requestPermissionsAsync();
+        if (status == "granted") {
+            setIsLocationEnabled(true);
+            await watchUserLocation();
+        } else {
+            Alert.alert("To use the app you need to allow sharing location");
+        }
+    };
+
     const watchUserLocation = async () => {
         await Location.watchPositionAsync({ accuracy: Location.Accuracy.High, distanceInterval: 805 }, (position: LocationObject) => {
             setUserLocation({
@@ -59,6 +72,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 longitude: position.coords.longitude,
             });
         }).catch((e) => {
+            console.log("locatiton is not enabled");
             recordError(e);
         });
     };
@@ -67,9 +81,6 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
         try {
             if (key === ONBOARDING_COMPLETE) {
                 setisOnbordingCompleted(true);
-            }
-            if (key === IS_LOCATION_ENABLED) {
-                setIsLocationEnabled(true);
             }
             await AsyncStorage.setItem(key, val);
         } catch (error) {
@@ -94,7 +105,7 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 clearAll,
                 isOnbordingCompleted,
                 userLocation,
-                watchUserLocation,
+                requestLocationPermission,
                 isLocationEnabled,
             }}>
             {children}
