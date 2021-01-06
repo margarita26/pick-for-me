@@ -37,12 +37,15 @@ export const AppSettingsProvider: React.FC = ({ children }) => {
                 const onboardingResult = await AsyncStorage.getItem(ONBOARDING_COMPLETE);
                 if (onboardingResult) {
                     setisOnbordingCompleted(JSON.parse(onboardingResult));
+                    console.log(onboardingResult);
                 }
                 const locationEnabled = await AsyncStorage.getItem(IS_LOCATION_ENABLED);
                 if (locationEnabled) {
-                    await watchUserLocation();
                     setIsLocationEnabled(JSON.parse(locationEnabled));
+                    await watchUserLocation();
+                    console.log(isLocationEnabled);
                 }
+
             } catch (e) {
                 recordError(e);
             }

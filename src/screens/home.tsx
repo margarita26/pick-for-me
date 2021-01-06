@@ -150,6 +150,8 @@ export const Home: React.FC = () => {
         );
     });
 
+    console.log(userLocation);
+
     return (
         <TouchableWithoutFeedback
             onPress={() => {
