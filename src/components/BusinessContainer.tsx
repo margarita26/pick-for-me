@@ -6,14 +6,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors, fontfamilies, fontSizes } from "../constants";
 import { Business } from "../models/business-data";
 
-type BusinessContainerProps = {
-    business: Business;
-};
-
-type TextProps = {
-    fontSize: string;
-};
-
 const StyledContainer = styled.View`
     min-height: 124px;
     padding: 4px;
@@ -48,6 +40,10 @@ const StyledIconsAndDetailsContainer = styled.View`
     flex-direction: row;
 `;
 
+type TextProps = {
+    fontSize: string;
+};
+
 const StyledText = styled.Text<TextProps>`
     font-size: ${(props: TextProps) => props.fontSize};
     font-family: ${fontfamilies.ptSerif};
@@ -63,9 +59,12 @@ const StyledIconsContainer = styled.View`
 const StyledBusinessDetailsContainer = styled.View`
     flex-direction: column;
     justify-content: space-between;
-
     padding-left: 4px;
 `;
+
+type BusinessContainerProps = {
+    business: Business;
+};
 
 export const BusinessContainer: React.FC<BusinessContainerProps> = ({ business }) => {
     const getMiles = (distance: number) => {
@@ -91,10 +90,7 @@ export const BusinessContainer: React.FC<BusinessContainerProps> = ({ business }
                     </StyledIconsContainer>
                     <StyledBusinessDetailsContainer>
                         <TouchableOpacity onPress={() => Linking.openURL(`tel:${business.phone}`)}>
-                            <StyledText
-                                fontSize={fontSizes.regular}>
-                                {business.phone}
-                            </StyledText>
+                            <StyledText fontSize={fontSizes.regular}>{business.phone}</StyledText>
                         </TouchableOpacity>
                         <StyledText fontSize={fontSizes.regular}>{business.rating}</StyledText>
                         <StyledText fontSize={fontSizes.regular}>{business.review_count}</StyledText>
